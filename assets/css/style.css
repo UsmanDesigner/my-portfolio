@@ -363,6 +363,12 @@ main {
 .avatar-box {
   background: var(--bg-gradient-onyx);
   border-radius: 20px;
+  flex-shrink: 0;
+}
+
+.info-content {
+  flex: 1;
+  min-width: 0;
 }
 
 .info-content .name {
@@ -379,11 +385,15 @@ main {
   font-size: var(--fs-8);
   font-weight: var(--fw-300);
   width: max-content;
+  max-width: 100%;
+  margin-inline: 0;
   padding: 3px 12px;
   border-radius: 8px;
+  text-align: center;
+  line-height: 1.4;
 }
 .info-content {
-  text-align: center; /* Centers inline elements like <a> */
+  text-align: left;
 }
 
 .info-content .download-btn {
@@ -1917,6 +1927,8 @@ textarea.form-input::-webkit-resizer { display: none; }
   .sidebar-info { flex-direction: column; }
 
   .avatar-box img { width: 150px; }
+
+  .info-content { text-align: center; }
 
   .info-content .name {
     white-space: nowrap;
