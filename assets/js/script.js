@@ -189,3 +189,42 @@ for (let i = 0; i < navigationLinks.length; i++) {
 
   });
 }
+
+// Scroll reveal + skill bars that fill when they come into view
+(function () {
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const groups = [".timeline-item", ".service-item", ".project-item", ".skills-item", ".about-text p"];
+  const items = [];
+  groups.forEach(function (sel) {
+    document.querySelectorAll(sel).forEach(function (el, i) {
+      el.classList.add("reveal");
+      el.style.setProperty("--reveal-delay", Math.min(i % 6, 5) * 0.07 + "s");
+      items.push(el);
+    });
+  });
+
+  const bars = document.querySelectorAll(".skill-progress-fill");
+  bars.forEach(function (bar) {
+    bar.dataset.width = bar.style.width;
+    if (!reduce) bar.style.width = "0";
+  });
+
+  if (reduce || !("IntersectionObserver" in window)) {
+    items.forEach(function (el) { el.classList.add("in"); });
+    bars.forEach(function (bar) { bar.style.width = bar.dataset.width; });
+    return;
+  }
+
+  const io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      if (el.classList.contains("skill-progress-fill")) el.style.width = el.dataset.width;
+      else el.classList.add("in");
+      io.unobserve(el);
+    });
+  }, { threshold: 0.12 });
+
+  items.forEach(function (el) { io.observe(el); });
+  bars.forEach(function (bar) { io.observe(bar); });
+})();
